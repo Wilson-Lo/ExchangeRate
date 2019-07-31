@@ -1,10 +1,13 @@
 package com.inventec.android.exchangerate;
 
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -16,13 +19,23 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class SearchExchangeRate {
 
     private final String TAG = "SearchExchangeRate";
     private String url_str = "";
+    public static final String  HANDLER_UPDATE_UI_DATA_KEY = "RateData";
+
     /**
-     *   set search base
+     * set search base
+     *
      * @param countryCode :initial  exchange rate base
      */
     SearchExchangeRate(String countryCode) {
@@ -30,10 +43,11 @@ public class SearchExchangeRate {
     }
 
     /**
-     *   set search base
+     * set search base
+     *
      * @param countryCode : exchange rate base
      */
-    public void setBase(String countryCode){
+    public void setBase(String countryCode) {
         this.url_str = "https://api.exchangerate-api.com/v4/latest/" + countryCode;
     }
 
@@ -60,9 +74,26 @@ public class SearchExchangeRate {
                 // Convert to JSON
                 JsonParser jp = new JsonParser();
                 JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-                JsonObject jsonobj = root.getAsJsonObject();
-                JsonObject jsonArray = jsonobj.getAsJsonObject("rates");
+                JsonObject rootJsonObject = root.getAsJsonObject();
+                JsonObject ratesJsonObject = rootJsonObject.getAsJsonObject("rates");
 
+                ArrayList<RateItem> rateHashMap = new ArrayList<>();
+                Set<Map.Entry<String, JsonElement>> entries = ratesJsonObject.entrySet();//will return members of your object
+
+                for (Map.Entry<String, JsonElement> entry : entries) {
+                    RateItem rateItem = new RateItem();
+                    rateItem.setCountryCode(entry.getKey());
+                    rateItem.setRate(Float.parseFloat(entry.getValue().toString()));
+                    rateHashMap.add(rateItem);
+                    Log.d(TAG, "key = " + entry.getKey() + " value = " + entry.getValue());
+                }
+
+                Message message = Message.obtain();
+                message.what = MainActivity.UPDATE_UI;
+                Bundle extras = new Bundle();
+                extras.putSerializable(HANDLER_UPDATE_UI_DATA_KEY, rateHashMap);
+                message.setData(extras);
+                MainActivity.mHandler.sendMessage(message);
             } catch (MalformedURLException e) {
                 Log.d(TAG, "MalformedURLException");
                 e.printStackTrace();
