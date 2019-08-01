@@ -1,5 +1,6 @@
 package com.wilson.android.exchangerate;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -101,6 +102,8 @@ public class SearchExchangeRate {
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
+
+
     }
 
 }
