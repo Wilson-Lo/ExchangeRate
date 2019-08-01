@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupUI(){
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setDrawingCacheEnabled(true);
     }
 
     /**
