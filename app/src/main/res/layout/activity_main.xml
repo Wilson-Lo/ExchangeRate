@@ -14,8 +14,7 @@
         android:layout_weight="1">
 
         <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
@@ -27,15 +26,12 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_marginTop="@dimen/dp_6"
-                android:layout_width="@dimen/dp_60"
+                android:layout_width="wrap_content"
                 android:layout_toEndOf="@id/imageView_title"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"></RelativeLayout>
+
 
     </LinearLayout>
 

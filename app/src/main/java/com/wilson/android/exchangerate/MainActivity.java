@@ -1,6 +1,8 @@
 package com.wilson.android.exchangerate;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
         rateHashMap = new ArrayList<>();
         recyclerViewAdapter = new RecyclerViewAdapter(this, rateHashMap);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        if (isTablet(this))
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        else
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -84,5 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * @param context : context
+     * @return true is tablet, false is smart phone
+     */
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 
 }
