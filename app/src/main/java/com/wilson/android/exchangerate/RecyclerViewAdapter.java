@@ -1,4 +1,4 @@
-package com.inventec.android.exchangerate;
+package com.wilson.android.exchangerate;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 

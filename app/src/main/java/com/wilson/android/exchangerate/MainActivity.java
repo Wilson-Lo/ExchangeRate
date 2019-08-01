@@ -1,4 +1,4 @@
-package com.inventec.android.exchangerate;
+package com.wilson.android.exchangerate;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
@@ -9,10 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @SuppressLint("HandlerLeak")
     public static Handler mHandler = new Handler() {
-
-        private final WeakReference<MainActivity> mActivity = null;
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

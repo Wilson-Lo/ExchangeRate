@@ -1,4 +1,4 @@
-package com.inventec.android.exchangerate;
+package com.wilson.android.exchangerate;
 
 import android.app.Application;
 import android.content.Context;

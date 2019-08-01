@@ -1,4 +1,4 @@
-package com.inventec.android.exchangerate;
+package com.wilson.android.exchangerate;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
