@@ -36,10 +36,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.txtRate.setText("" + this.rateHashMap.get(position).getRate());
         String lowercaseCountryCode = this.rateHashMap.get(position).getCountryCode().toLowerCase();
         //try is the special word in the android, so change file name try to try_flag
-        if(lowercaseCountryCode.equals("try")){
+        if (lowercaseCountryCode.equals("try")) {
             lowercaseCountryCode = lowercaseCountryCode + "_flag";
         }
-        int checkExistence = context.getResources().getIdentifier(lowercaseCountryCode , "drawable", context.getPackageName());
+        int checkExistence = context.getResources().getIdentifier(lowercaseCountryCode, "drawable", context.getPackageName());
 
         if (checkExistence != 0) {  // the resource exists...
 
@@ -54,13 +54,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return this.rateHashMap.size();
+        if (this.rateHashMap != null) {
+            return this.rateHashMap.size();
+        } else {
+            return 0;
+        }
     }
 
     //Adapter need a ViewHolder，just do its constructor，view will stored in the itemView
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtRate, txCountryCode;
         ImageView imageViewFlag;
+
         ViewHolder(View itemView) {
             super(itemView);
             imageViewFlag = (ImageView) itemView.findViewById(R.id.imageView_flag);
