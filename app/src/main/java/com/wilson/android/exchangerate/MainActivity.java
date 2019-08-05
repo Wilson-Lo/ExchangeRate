@@ -2,10 +2,13 @@ package com.wilson.android.exchangerate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -24,10 +26,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static RecyclerView recyclerView;
     private static Spinner spinner;
     public static final int UPDATE_UI = 0;
+    public static final int SHOW_WARNING = 1;
     private static RecyclerViewAdapter recyclerViewAdapter;
     private static ArrayList<RateItem> rateHashMap;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     //setup UI
     private void setupUI() {
+       builder = new AlertDialog.Builder(
+                MainActivity.this,
+                R.style.AlertDialog);
+        builder.setTitle("Warning");
+        builder.setMessage("Please connect to the internet !");
+        builder.setPositiveButton("ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int whichButton) {
+
+                    }
+                });
+
+
         rateHashMap = new ArrayList<>();
 
         //recycle view
@@ -68,7 +85,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                new SearchExchangeRate(parent.getSelectedItem().toString()).getExchangeRate();
+                if (isNetworkConnected())
+                    new SearchExchangeRate(parent.getSelectedItem().toString()).getExchangeRate();
+                else {
+                    builder.show();
+                }
             }
 
             @Override
@@ -107,10 +128,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+
     @Override
     public void onRefresh() {
         Log.d(TAG, "onRefresh");
         new SearchExchangeRate(spinner.getSelectedItem().toString()).getExchangeRate();
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    /**
+     * Check device is connect to internet or not.
+     *
+     * @return true: is connect to internet,;  false : is not connect to internet.
+     */
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }
